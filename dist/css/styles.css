@@ -478,12 +478,10 @@ body > main {
       -ms-flex-align: center;
           align-items: center;
   gap: 4px;
-  color: rgb(0, 123, 255);
 }
 .sidebar__header-main svg {
   width: 15px;
   height: 15px;
-  stroke: rgb(0, 123, 255);
   -webkit-transition: stroke 0.2s;
   transition: stroke 0.2s;
 }

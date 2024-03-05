@@ -68,12 +68,10 @@ body > main {
     display: flex;
     align-items: center;
     gap: 4px;
-    color: rgba(0, 123, 255, 1);
 
     svg {
       width: 15px;
       height: 15px;
-      stroke:rgba(0, 123, 255, 1);
       transition: stroke 0.2s;
     }
   }
