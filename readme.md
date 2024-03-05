@@ -1,4 +1,6 @@
-# Daedalus
-A quick and dirty-ish boilerplate for simple static websites that probably doesn't need a full-blown framework. Uses prepros to compile scss.
+# 1PL Label Generator
+A quick and dirty label generator for 1PL.
 
-![Daedalus Preview](preview.png)
+## Features
+- Bulk creation of labels
+- PDF and Image downloads of labels
