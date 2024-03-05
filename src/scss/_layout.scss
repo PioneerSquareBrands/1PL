@@ -54,11 +54,11 @@ body > main {
   }
 
 
-  &__heading {
+  &__header {
     position: relative;
   }
 
-  &__header-main {
+  &__header-text {
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
@@ -73,37 +73,6 @@ body > main {
       width: 15px;
       height: 15px;
       transition: stroke 0.2s;
-    }
-  }
-
-  &__title {
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    margin: 0 -20px;
-    padding: 8px 20px 8px 28px;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-    cursor: pointer;
-    transition: color 0.2s;
-
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    color: $text;
-    
-    svg {
-      width: 15px;
-      height: 15px;
-      stroke: $icons;
-      transition: stroke 0.2s;
-    }
-
-    &--active {
-      color: rgba(0, 123, 255, 1);
-
-      svg {
-        stroke:rgba(0, 123, 255, 1)
-      }
     }
   }
 
@@ -144,15 +113,6 @@ body > main {
     }
   }
 
-  &__form {
-    margin: 12px 0 8px;
-    display: none;
-  
-    &--active {
-      display: block;
-    }
-  }
-
   .field {
     display: grid;
     font-size: 14px;
@@ -185,29 +145,6 @@ body > main {
       height: 14px;
       margin-right: 8px;
       stroke: $icons;
-    }
-  }
-
-  #sku {
-    text-transform: uppercase;
-  }
-
-  &__item-title {
-    display: flex;
-    align-items: center;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none; 
-    
-    &-sku {
-      font-weight: 600;
-    }
-
-    &-brand {
-      font-size: 10px;
-      text-transform: capitalize;
-      margin-left: 4px;
-      font-weight: 400;
     }
   }
 
@@ -296,6 +233,125 @@ body > main {
 
     .input--error {
       box-shadow: $input-error;
+    }
+  }
+}
+
+// Sidebar Items
+.item {
+  display: block;
+
+  #sku { text-transform: uppercase; }
+
+  &__heading {
+    position: relative;
+  }
+
+  &__title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0 -20px;
+    padding: 8px 20px 8px 28px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: $text;
+
+    svg {
+      width: 15px;
+      height: 15px;
+      stroke: $icons;
+      transition: stroke 0.2s;
+    }
+
+    &-text {
+      display: flex;
+      align-items: center;
+      gap: 4px
+    }
+
+    &-sku {
+      font-weight: 600;
+    }
+
+    &-brand {
+      font-size: 10px;
+      text-transform: capitalize;
+      font-weight: 400;
+    }
+  }
+
+  &__heading:hover &__title,
+  &__heading--active &__title {
+    color: rgba(0, 123, 255, 1);
+
+    svg {
+      stroke:rgba(0, 123, 255, 1)
+    }
+  }
+
+  &__buttons {
+    position: absolute;
+    top: 8px;
+    right: -4px;
+    display: flex;
+    gap: 4px;
+    //opacity: 0;
+    transition-duration: 0.2s;
+  }
+  
+  &:hover &__buttons { opacity: 1; }
+
+  &__button {
+    background-color: transparent;
+    border: 0;
+    font-size: 12px;
+    line-height: 16px;
+    padding: 4px;
+    transition-duration: 0.2s;
+    position: relative;
+
+    svg {
+      width: 14px;
+      height: 14px;
+      stroke: $icons;
+      stroke-width: 2px;
+      transition-duration: 0.1s;
+    }
+
+    &--delete svg { stroke: $error }
+
+    &--delete-confirm::after {
+      content: 'Are you sure?';
+      position: absolute;
+      width: 100px;
+      font-size: 12px;
+      background-color: #ffffff;
+      box-shadow: $paper;
+      border-radius: 4px;
+      color: $icons;
+      right: calc(100% + 4px);
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    &:hover svg { stroke:rgba(0, 123, 255, 1) }
+    &:active svg { stroke:rgba(0, 123, 255, 0.5) }
+    &--delete:hover svg { stroke: red }
+  }
+
+
+
+  &__form {
+    margin: 12px 0 8px;
+    display: none;
+  
+    &--active {
+      display: block;
     }
   }
 }

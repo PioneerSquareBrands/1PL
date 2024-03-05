@@ -461,10 +461,10 @@ body > main {
   font-weight: 700;
   color: #292A2F;
 }
-.sidebar__heading {
+.sidebar__header {
   position: relative;
 }
-.sidebar__header-main {
+.sidebar__header-text {
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
@@ -479,43 +479,11 @@ body > main {
           align-items: center;
   gap: 4px;
 }
-.sidebar__header-main svg {
+.sidebar__header-text svg {
   width: 15px;
   height: 15px;
   -webkit-transition: stroke 0.2s;
   transition: stroke 0.2s;
-}
-.sidebar__title {
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  margin: 0 -20px;
-  padding: 8px 20px 8px 28px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  -webkit-transition: color 0.2s;
-  transition: color 0.2s;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  gap: 4px;
-  color: #656e81;
-}
-.sidebar__title svg {
-  width: 15px;
-  height: 15px;
-  stroke: #9197a5;
-  -webkit-transition: stroke 0.2s;
-  transition: stroke 0.2s;
-}
-.sidebar__title--active {
-  color: rgb(0, 123, 255);
-}
-.sidebar__title--active svg {
-  stroke: rgb(0, 123, 255);
 }
 .sidebar__add-item {
   background-color: transparent;
@@ -561,13 +529,6 @@ body > main {
   -webkit-transition-duration: 0.2s;
           transition-duration: 0.2s;
 }
-.sidebar__form {
-  margin: 12px 0 8px;
-  display: none;
-}
-.sidebar__form--active {
-  display: block;
-}
 .sidebar .field {
   display: -ms-grid;
   display: grid;
@@ -610,30 +571,6 @@ body > main {
   height: 14px;
   margin-right: 8px;
   stroke: #9197a5;
-}
-.sidebar #sku {
-  text-transform: uppercase;
-}
-.sidebar__item-title {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  -moz-user-select: none;
-       user-select: none;
-}
-.sidebar__item-title-sku {
-  font-weight: 600;
-}
-.sidebar__item-title-brand {
-  font-size: 10px;
-  text-transform: capitalize;
-  margin-left: 4px;
-  font-weight: 400;
 }
 .sidebar textarea {
   height: 48px;
@@ -728,6 +665,131 @@ body > main {
 .sidebar .field--error .input--error {
   -webkit-box-shadow: rgba(220, 0, 0, 0.5) 0px 0px 0px 1px, rgba(0, 0, 0, 0.05) 0px 6px 8px 0px, rgba(0, 0, 0, 0.04) 0px 3px 4px 0px;
           box-shadow: rgba(220, 0, 0, 0.5) 0px 0px 0px 1px, rgba(0, 0, 0, 0.05) 0px 6px 8px 0px, rgba(0, 0, 0, 0.04) 0px 3px 4px 0px;
+}
+
+.item {
+  display: block;
+}
+.item #sku {
+  text-transform: uppercase;
+}
+.item__heading {
+  position: relative;
+}
+.item__title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0 -20px;
+  padding: 8px 20px 8px 28px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  -webkit-transition: color 0.2s;
+  transition: color 0.2s;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 4px;
+  color: #656e81;
+}
+.item__title svg {
+  width: 15px;
+  height: 15px;
+  stroke: #9197a5;
+  -webkit-transition: stroke 0.2s;
+  transition: stroke 0.2s;
+}
+.item__title-text {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 4px;
+}
+.item__title-sku {
+  font-weight: 600;
+}
+.item__title-brand {
+  font-size: 10px;
+  text-transform: capitalize;
+  font-weight: 400;
+}
+.item__heading:hover .item__title, .item__heading--active .item__title {
+  color: rgb(0, 123, 255);
+}
+.item__heading:hover .item__title svg, .item__heading--active .item__title svg {
+  stroke: rgb(0, 123, 255);
+}
+.item__buttons {
+  position: absolute;
+  top: 8px;
+  right: -4px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 4px;
+  -webkit-transition-duration: 0.2s;
+          transition-duration: 0.2s;
+}
+.item:hover .item__buttons {
+  opacity: 1;
+}
+.item__button {
+  background-color: transparent;
+  border: 0;
+  font-size: 12px;
+  line-height: 16px;
+  padding: 4px;
+  -webkit-transition-duration: 0.2s;
+          transition-duration: 0.2s;
+  position: relative;
+}
+.item__button svg {
+  width: 14px;
+  height: 14px;
+  stroke: #9197a5;
+  stroke-width: 2px;
+  -webkit-transition-duration: 0.1s;
+          transition-duration: 0.1s;
+}
+.item__button--delete svg {
+  stroke: rgba(220, 0, 0, 0.5);
+}
+.item__button--delete-confirm::after {
+  content: "Are you sure?";
+  position: absolute;
+  width: 100px;
+  font-size: 12px;
+  background-color: #ffffff;
+  -webkit-box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px, rgba(51, 65, 85, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.05) 0px 20px 25px -5px, rgba(0, 0, 0, 0.05) 0px 8px 10px -6px;
+          box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px, rgba(51, 65, 85, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.05) 0px 20px 25px -5px, rgba(0, 0, 0, 0.05) 0px 8px 10px -6px;
+  border-radius: 4px;
+  color: #9197a5;
+  right: calc(100% + 4px);
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+.item__button:hover svg {
+  stroke: rgb(0, 123, 255);
+}
+.item__button:active svg {
+  stroke: rgba(0, 123, 255, 0.5);
+}
+.item__button--delete:hover svg {
+  stroke: red;
+}
+.item__form {
+  margin: 12px 0 8px;
+  display: none;
+}
+.item__form--active {
+  display: block;
 }
 
 .preview {

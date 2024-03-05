@@ -27,7 +27,7 @@ const el = {
 
 // Sidebar Field Updates
 const fieldInit = (item) => {
-  let elementIndex = item.id.replace('sidebar_item_', '');
+  let elementIndex = item.id.replace('item_', '');
 
   // Call the update functions immediately
   brandUpdate(item, elementIndex);
@@ -41,7 +41,7 @@ const fieldInit = (item) => {
 };
 
 window.addEventListener('load', () => {
-  document.querySelectorAll('.sidebar__item').forEach(fieldInit);
+  document.querySelectorAll('.sidebar__fields .item').forEach(fieldInit);
 });
 
 const itemAdder = () => {
@@ -52,15 +52,21 @@ const itemAdder = () => {
   addButton.addEventListener('click', () => {
     itemCounter++; // Increment counter
 
-    let sidebarTemplate = `<div class="sidebar__item" id="sidebar_item_${itemCounter}">
-      <h2 class="sidebar__title sidebar__title--active">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-qr-code"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>
-        <span class="sidebar__item-title">
-          <span class="sidebar__item-title-sku">1050001</span>
-          <span class="sidebar__item-title-brand">(Brenthaven)</span>
-        </span>
-      </h2>
-      <form id="upc_form_${itemCounter}" class="sidebar__form sidebar__form--active labelinator">
+    let sidebarTemplate = `<div class="sidebar__item item" id="item_${itemCounter}">
+      <div class="item__heading item__heading--active">
+        <h2 class="item__title">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-qr-code"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>
+          <span class="item__title-text">
+            <span class="item__title-sku">1050001</span>
+            <span class="item__title-brand">(Brenthaven)</span>
+          </span>
+        </h2>
+        <div class="item__buttons">
+          <button class="item__button item__button--download"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-to-line"><path d="M12 17V3"/><path d="m6 11 6 6 6-6"/><path d="M19 21H5"/></svg></button>
+          <button class="item__button item__button--delete"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg></button>
+        </div>
+      </div>
+      <form id="upc_form_${itemCounter}" class="item__form item__form--active labelinator">
         <fieldset>
           <div class="field">
             <label class="field__label" for="brand_${itemCounter}">
@@ -144,7 +150,7 @@ const itemAdder = () => {
     pageItemContainer.insertAdjacentHTML('beforeend', pageTemplate);
     
     // Get the new item
-    let newItem = document.getElementById(`sidebar_item_${itemCounter}`);
+    let newItem = document.getElementById(`item_${itemCounter}`);
 
     // Initialize the fields of the new item
     fieldInit(newItem);
@@ -264,11 +270,11 @@ const itemAccordion = () => {
   let sidebarContainer = document.querySelector('.sidebar__fields');
 
   sidebarContainer.addEventListener('click', (event) => {
-    let itemTitle = event.target.closest('.sidebar__title');
+    let itemTitle = event.target.closest('.item__heading');
     if (itemTitle) {
       let itemForm = itemTitle.nextElementSibling;
-      itemForm.classList.toggle('sidebar__form--active');
-      itemTitle.classList.toggle('sidebar__title--active');
+      itemForm.classList.toggle('item__form--active');
+      itemTitle.classList.toggle('item__heading--active');
     }
   });
 }
