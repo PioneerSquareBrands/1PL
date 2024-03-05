@@ -58,6 +58,26 @@ body > main {
     position: relative;
   }
 
+  &__header-main {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0 -20px;
+    padding: 8px 20px 8px 28px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: rgba(0, 123, 255, 1);
+
+    svg {
+      width: 15px;
+      height: 15px;
+      stroke:rgba(0, 123, 255, 1);
+      transition: stroke 0.2s;
+    }
+  }
+
   &__title {
     font-size: 12px;
     font-weight: 700;

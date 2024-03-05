@@ -464,6 +464,29 @@ body > main {
 .sidebar__heading {
   position: relative;
 }
+.sidebar__header-main {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0 -20px;
+  padding: 8px 20px 8px 28px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 4px;
+  color: rgb(0, 123, 255);
+}
+.sidebar__header-main svg {
+  width: 15px;
+  height: 15px;
+  stroke: rgb(0, 123, 255);
+  -webkit-transition: stroke 0.2s;
+  transition: stroke 0.2s;
+}
 .sidebar__title {
   font-size: 12px;
   font-weight: 700;
