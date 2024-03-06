@@ -777,8 +777,9 @@ body > main {
   background-color: #ffffff;
   -webkit-box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px, rgba(51, 65, 85, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.05) 0px 20px 25px -5px, rgba(0, 0, 0, 0.05) 0px 8px 10px -6px;
           box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px, rgba(51, 65, 85, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.05) 0px 20px 25px -5px, rgba(0, 0, 0, 0.05) 0px 8px 10px -6px;
+  border: 1px solid rgba(220, 0, 0, 0.5);
   border-radius: 4px;
-  color: #9197a5;
+  color: rgba(220, 0, 0, 0.5);
   right: calc(100% + 4px);
   top: 50%;
   -webkit-transform: translateY(-50%);

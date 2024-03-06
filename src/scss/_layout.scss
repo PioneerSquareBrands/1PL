@@ -341,8 +341,9 @@ body > main {
       font-size: 12px;
       background-color: #ffffff;
       box-shadow: $paper;
+      border: 1px solid $error;
       border-radius: 4px;
-      color: $icons;
+      color: $error;
       right: calc(100% + 4px);
       top: 50%;
       transform: translateY(-50%);

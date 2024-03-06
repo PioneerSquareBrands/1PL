@@ -75,7 +75,6 @@ const brandUpdate = (element, index) => {
 }
 
 const skuUpdate = (element, index) => {
-  console.log('sku update!');
   let skuValue = element.querySelector('.sku-field').value.toUpperCase() || defaults(element).sku;
   let pageItem = document.querySelector('#page_item_' + index);
   let pageItemSku = pageItem.querySelectorAll('.print-sku');
@@ -99,7 +98,7 @@ const itemAdder = () => {
   let addButton = document.querySelector('.sidebar__add-item');
 
   addButton.addEventListener('click', () => {
-    itemCounter++; // Increment counter
+    itemCounter++;
 
     let sidebarTemplate = `<div class="sidebar__item item" id="item_${itemCounter}">
       <div class="item__heading item__heading--active">
@@ -194,29 +193,34 @@ const itemAdder = () => {
       </div>
     </div>`;
 
-    // Append the templates to the containers
     sidebarItemContainer.insertAdjacentHTML('beforeend', sidebarTemplate);
     pageItemContainer.insertAdjacentHTML('beforeend', pageTemplate);
     
-    // Get the new item
     let newItem = document.getElementById(`item_${itemCounter}`);
-
-    // Initialize the fields of the new item
     fieldInit(newItem);
   });
 }
 
 const itemRemover = () => {
   let sidebarItemContainer = document.querySelector('.sidebar__fields');
-  let pageItemContainer = document.querySelector('.preview__content');
-  let removeButton = document.querySelector('.sidebar__remove-item');
 
-  removeButton.addEventListener('click', () => {
-    let lastItem = sidebarItemContainer.lastElementChild;
-    let lastPageItem = pageItemContainer.lastElementChild;
-
-    lastItem.remove();
-    lastPageItem.remove();
+  sidebarItemContainer.addEventListener('click', (event) => {
+    let button = event.target.closest('.item__button--delete');
+    if (button) {
+      console.log(button.closest('.item').id, button.classList, itemCounter);
+      if(button.classList.contains('item__button--delete-confirm')) {
+        itemCounter--;
+        button.classList.remove('item__button--delete-confirm');
+        
+        console.log('delete confirmed');
+        let item = button.closest('.item');
+        let pageItem = document.getElementById(item.id.replace('item_', 'page_item_'));
+        item.remove();
+        pageItem.remove();
+      } else {
+        button.classList.add('item__button--delete-confirm');
+      }
+    }
   });
 }
 
@@ -285,7 +289,8 @@ const itemAccordion = () => {
 
   sidebarContainer.addEventListener('click', (event) => {
     let itemTitle = event.target.closest('.item__heading');
-    if (itemTitle) {
+    let itemButtons = event.target.closest('.item__buttons'); // Prevents triggering from buttons
+    if (itemTitle && !itemButtons) {
       let itemForm = itemTitle.nextElementSibling;
       itemForm.classList.toggle('item__form--active');
       itemTitle.classList.toggle('item__heading--active');
@@ -296,3 +301,4 @@ const itemAccordion = () => {
 // Init
 itemAccordion();
 itemAdder();
+itemRemover();
