@@ -44,6 +44,55 @@ window.addEventListener('load', () => {
   document.querySelectorAll('.sidebar__fields .item').forEach(fieldInit);
 });
 
+const brandUpdate = (element, index) => {
+  let pageItem = document.querySelector('#page_item_' + index);
+  let skuValue = element.querySelector('.sku-field').value.toUpperCase() ||  defaults(element).sku;
+  let descriptionValue = element.querySelector('.description-field').value || defaults(element).description;
+  let sidebarItemBrand = element.querySelectorAll('.item__title-brand');
+  
+  // Update Preview class
+  // const previewClassesToRemove = ['preview--brenthaven', 'preview--gumdrop', 'preview--vault'];
+  // previewClassesToRemove.forEach((className) => el.preview.classList.remove(className));
+  // el.preview.classList.add(`preview--${defaults.brandField}`);
+
+  // const sidebarClassesToRemove = ['sidebar--brenthaven', 'sidebar--gumdrop', 'sidebar--vault'];
+  // sidebarClassesToRemove.forEach((className) => el.sidebar.classList.remove(className));
+  // el.sidebar.classList.add(`sidebar--${defaults.brandField}`);
+
+  pageItem.classList.add(`label--${defaults(element).brandField}`)
+  pageItem.querySelector('.print__header img').src = defaults(element).logoSrc;
+  pageItem.querySelector('.print-logo').src = defaults(element).logoSrc;
+
+  updateTextContent(pageItem.querySelectorAll('.print-description'), descriptionValue);
+  updateTextContent(pageItem.querySelectorAll('.print-sku'), skuValue);
+
+  // Update input field placeholders with defaults
+  updateTextContent(sidebarItemBrand, `(${defaults(element).brandField})`);
+  element.querySelector('.sku-field').placeholder = defaults(element).sku;
+  element.querySelector('.description-field').placeholder = defaults(element).description;
+
+  skuUpdate(element, index);
+}
+
+const skuUpdate = (element, index) => {
+  console.log('sku update!');
+  let skuValue = element.querySelector('.sku-field').value.toUpperCase() || defaults(element).sku;
+  let pageItem = document.querySelector('#page_item_' + index);
+  let pageItemSku = pageItem.querySelectorAll('.print-sku');
+  let sidebarItemSku = element.querySelectorAll('.item__title-sku');
+
+  updateTextContent(pageItemSku, skuValue);
+  updateTextContent(sidebarItemSku, skuValue);
+  dataMatrixUpdate(skuValue, pageItem);
+}
+
+const descriptionUpdate = (element, index) => {
+  let descriptionValue = element.querySelector('.description-field').value || defaults(element).description;
+  let pageItemDescription = document.querySelectorAll('#page_item_' + index + ' .print-description');
+
+  updateTextContent(pageItemDescription, descriptionValue);
+}
+
 const itemAdder = () => {
   let sidebarItemContainer = document.querySelector('.sidebar__fields');
   let pageItemContainer = document.querySelector('.preview__content');
@@ -157,53 +206,18 @@ const itemAdder = () => {
   });
 }
 
-const brandUpdate = (element, index) => {
-  let pageItem = document.querySelector('#page_item_' + index);
-  let skuValue = element.querySelector('.sku-field').value.toUpperCase() ||  defaults(element).sku;
-  let descriptionValue = element.querySelector('.description-field').value || defaults(element).description;
-  let sidebarItemBrand = element.querySelectorAll('.sidebar__item-title-brand');
-  
-  // Update Preview class
-  // const previewClassesToRemove = ['preview--brenthaven', 'preview--gumdrop', 'preview--vault'];
-  // previewClassesToRemove.forEach((className) => el.preview.classList.remove(className));
-  // el.preview.classList.add(`preview--${defaults.brandField}`);
+const itemRemover = () => {
+  let sidebarItemContainer = document.querySelector('.sidebar__fields');
+  let pageItemContainer = document.querySelector('.preview__content');
+  let removeButton = document.querySelector('.sidebar__remove-item');
 
-  // const sidebarClassesToRemove = ['sidebar--brenthaven', 'sidebar--gumdrop', 'sidebar--vault'];
-  // sidebarClassesToRemove.forEach((className) => el.sidebar.classList.remove(className));
-  // el.sidebar.classList.add(`sidebar--${defaults.brandField}`);
+  removeButton.addEventListener('click', () => {
+    let lastItem = sidebarItemContainer.lastElementChild;
+    let lastPageItem = pageItemContainer.lastElementChild;
 
-  pageItem.classList.add(`label--${defaults(element).brandField}`)
-  pageItem.querySelector('.print__header img').src = defaults(element).logoSrc;
-  pageItem.querySelector('.print-logo').src = defaults(element).logoSrc;
-
-  updateTextContent(pageItem.querySelectorAll('.print-description'), descriptionValue);
-  updateTextContent(pageItem.querySelectorAll('.print-sku'), skuValue);
-
-  // Update input field placeholders with defaults
-  updateTextContent(sidebarItemBrand, `(${defaults(element).brandField})`);
-  element.querySelector('.sku-field').placeholder = defaults(element).sku;
-  element.querySelector('.description-field').placeholder = defaults(element).description;
-
-  skuUpdate(element, index);
-}
-
-const skuUpdate = (element, index) => {
-  console.log('sku update!');
-  let skuValue = element.querySelector('.sku-field').value.toUpperCase() || defaults(element).sku;
-  let pageItem = document.querySelector('#page_item_' + index);
-  let pageItemSku = pageItem.querySelectorAll('.print-sku');
-  let sidebarItemSku = element.querySelectorAll('.sidebar__item-title-sku');
-
-  updateTextContent(pageItemSku, skuValue);
-  updateTextContent(sidebarItemSku, skuValue);
-  dataMatrixUpdate(skuValue, pageItem);
-}
-
-const descriptionUpdate = (element, index) => {
-  let descriptionValue = element.querySelector('.description-field').value || defaults(element).description;
-  let pageItemDescription = document.querySelectorAll('#page_item_' + index + ' .print-description');
-
-  updateTextContent(pageItemDescription, descriptionValue);
+    lastItem.remove();
+    lastPageItem.remove();
+  });
 }
 
 // Utils
@@ -278,8 +292,6 @@ const itemAccordion = () => {
     }
   });
 }
-
-
 
 // Init
 itemAccordion();

@@ -675,13 +675,17 @@ body > main {
 }
 .item__heading {
   position: relative;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+       user-select: none;
 }
 .item__title {
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   margin: 0 -20px;
-  padding: 8px 20px 8px 28px;
+  padding: 8px 64px 8px 28px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   cursor: pointer;
   -webkit-transition: color 0.2s;
@@ -689,23 +693,25 @@ body > main {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
   gap: 4px;
   color: #656e81;
 }
 .item__title svg {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto;
   width: 15px;
   height: 15px;
   stroke: #9197a5;
   -webkit-transition: stroke 0.2s;
   transition: stroke 0.2s;
+  margin-top: 4px;
 }
 .item__title-text {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  display: inline-block;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -713,11 +719,14 @@ body > main {
 }
 .item__title-sku {
   font-weight: 600;
+  vertical-align: middle;
+  word-break: break-word;
 }
 .item__title-brand {
   font-size: 10px;
   text-transform: capitalize;
   font-weight: 400;
+  vertical-align: middle;
 }
 .item__heading:hover .item__title, .item__heading--active .item__title {
   color: rgb(0, 123, 255);
@@ -740,7 +749,7 @@ body > main {
   opacity: 1;
 }
 .item__button {
-  background-color: transparent;
+  background-color: #F7F8F9;
   border: 0;
   font-size: 12px;
   line-height: 16px;

@@ -245,6 +245,9 @@ body > main {
 
   &__heading {
     position: relative;
+    -webkit-user-select: none; 
+    -ms-user-select: none;
+    user-select: none;
   }
 
   &__title {
@@ -252,36 +255,42 @@ body > main {
     font-weight: 700;
     text-transform: uppercase;
     margin: 0 -20px;
-    padding: 8px 20px 8px 28px;
+    padding: 8px 64px 8px 28px;
     border-bottom: 1px solid rgba(0,0,0,0.1);
     cursor: pointer;
     transition: color 0.2s;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    //align-items: center;
     gap: 4px;
     color: $text;
 
     svg {
+      flex: 0 0 auto;
       width: 15px;
       height: 15px;
       stroke: $icons;
       transition: stroke 0.2s;
+      margin-top: 4px;
     }
 
     &-text {
-      display: flex;
+      display: inline-block;
       align-items: center;
       gap: 4px
     }
 
     &-sku {
       font-weight: 600;
+      vertical-align: middle;
+      word-break: break-word;
     }
 
     &-brand {
       font-size: 10px;
       text-transform: capitalize;
       font-weight: 400;
+      vertical-align: middle;
     }
   }
 
@@ -307,7 +316,7 @@ body > main {
   &:hover &__buttons { opacity: 1; }
 
   &__button {
-    background-color: transparent;
+    background-color: #F7F8F9;
     border: 0;
     font-size: 12px;
     line-height: 16px;
