@@ -218,8 +218,16 @@ const itemRemover = () => {
         item.remove();
         pageItem.remove();
       } else {
+        document.querySelectorAll('.item__button--delete-confirm').forEach(button => button.classList.remove('item__button--delete-confirm'));
         button.classList.add('item__button--delete-confirm');
       }
+    }
+  });
+
+  document.addEventListener('click', (event) => {
+    let button = event.target.closest('.item__button--delete-confirm');
+    if (!button) {
+      document.querySelectorAll('.item__button--delete-confirm').forEach(button => button.classList.remove('item__button--delete-confirm'));
     }
   });
 }
