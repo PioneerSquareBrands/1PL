@@ -3532,7 +3532,7 @@ const itemAdder = () => {
         </fieldset>
       </form>
     </li>`;
-    let pageTemplate = `<div class="page page--a4" id="page_item_${itemCounter}">
+    let pageTemplate = `<div class="page page--a4 page-item--active" id="page_item_${itemCounter}">
       <div class="page__content print">
 
         <header class="print__header">
@@ -3565,6 +3565,7 @@ const itemAdder = () => {
 
     document.querySelectorAll('.item__heading--active').forEach(item => item.classList.remove('item__heading--active'));
     document.querySelectorAll('.item__form--active').forEach(item => item.classList.remove('item__form--active'));
+    document.querySelectorAll('.page-item--active').forEach(item => item.classList.remove('page-item--active'));
     sidebarItemContainer.insertAdjacentHTML('afterbegin', sidebarTemplate);
     pageItemContainer.insertAdjacentHTML('afterbegin', pageTemplate);
     
@@ -3647,7 +3648,7 @@ const enumerator = (elements) => {
   const lastItemIndex = sidebarItems.length - 1;
   sidebarItems.forEach((item, index) => {
     const number = lastItemIndex - index + 1;
-    item.setAttribute('data-number', number);
+    item.querySelector('.item__title').setAttribute('data-number', number);
     const itemId = item.id.replace('item_', '');
     const pageItem = document.querySelector(`#page_item_${itemId}`);
     pageItem.setAttribute('data-number', number);
@@ -3724,6 +3725,13 @@ const itemAccordion = () => {
       let itemForm = itemTitle.nextElementSibling;
       itemForm.classList.toggle('item__form--active');
       itemTitle.classList.toggle('item__heading--active');
+      
+      // Get the item id
+      let itemId = itemTitle.closest('.item').id.replace('item_', '');
+      
+      // Toggle the page item active class
+      let pageItem = document.querySelector(`#page_item_${itemId}`);
+      pageItem.classList.toggle('page-item--active');
     }
   });
 }
