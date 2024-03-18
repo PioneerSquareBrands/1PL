@@ -3732,6 +3732,13 @@ const itemAccordion = () => {
       // Toggle the page item active class
       let pageItem = document.querySelector(`#page_item_${itemId}`);
       pageItem.classList.toggle('page-item--active');
+      
+      // Scroll to the active page item
+      let previewContent = document.querySelector('.preview__content');
+      previewContent.scrollTo({
+        top: pageItem.offsetTop - 20,
+        behavior: 'smooth'
+      });
     }
   });
 }
@@ -3741,10 +3748,33 @@ const pixelToInch = (pixels) => {
   return parseFloat((pixels / dpi).toFixed(2));
 }
 
+const hoverer = () => {
+  let sidebar = document.querySelector('.sidebar__fields');
+
+  sidebar.addEventListener('mouseover', (event) => {
+    let item = event.target.closest('.sidebar__item');
+    if (item && !item.contains(event.relatedTarget)) {
+      let itemId = item.id.replace('item_', '');
+      let pageItem = document.querySelector(`#page_item_${itemId}`);
+      pageItem.classList.add('page-item--hover');
+    }
+  });
+
+  sidebar.addEventListener('mouseout', (event) => {
+    let item = event.target.closest('.sidebar__item');
+    if (item && !item.contains(event.relatedTarget)) {
+      let itemId = item.id.replace('item_', '');
+      let pageItem = document.querySelector(`#page_item_${itemId}`);
+      pageItem.classList.remove('page-item--hover');
+    }
+  });
+}
+
 // Init
 itemAccordion();
 itemAdder();
 itemRemover();
+hoverer();
 el.sidebar.addEventListener('click', savePNG);
 }();
 /******/ })()
