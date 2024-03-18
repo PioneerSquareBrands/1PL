@@ -240,6 +240,8 @@ body > main {
 // Sidebar Items
 .item {
   display: block;
+  list-style-type: none;
+  counter-reset: a;
 
   #sku { text-transform: uppercase; }
 
@@ -309,7 +311,7 @@ body > main {
     right: -4px;
     display: flex;
     gap: 4px;
-    //opacity: 0;
+    opacity: 0;
     transition-duration: 0.2s;
   }
   
@@ -354,7 +356,10 @@ body > main {
     &--delete:hover svg { stroke: red }
   }
 
-
+  // Remove delete button when only one item is left
+  &:first-child:last-child .item__button--delete {
+    display: none;
+  }
 
   &__form {
     margin: 12px 0 8px;
@@ -487,7 +492,7 @@ body > main {
     flex-wrap: wrap;
     align-items: center;
     overflow: auto;
-    padding-bottom: 20px;
+    padding: 40px 0px 20px;
     transition: opacity 0.2s;
 
     body.canvas-animating & {
@@ -543,8 +548,8 @@ body > main {
   }
 
   .preview__content--condensed & {
-    margin: 20px;
-    padding: 12px;
+    margin: 10px;
+    padding: 2px;
 
     &--carton { padding: 0 0 $carton-condensed; }
     &--carton-front { width: calc($carton-condensed * ($carton-length / $carton-height)); }
@@ -640,6 +645,7 @@ body > main {
 
   &__header {
     text-align: center;
+    display: none;
   }
 
   h1, h2, h3 {
@@ -676,7 +682,7 @@ body > main {
 
 .label {
   width: 4in;
-  height: 3in;
+  height: 2in;
   border: 1px solid magenta;
   align-items: center;
   justify-content: center;
@@ -688,7 +694,6 @@ body > main {
 
   &__brand {
     display: flex;
-    height: 44px;
     text-align: center;
     align-items: center;
   }
@@ -696,7 +701,7 @@ body > main {
   &__logo {
     display: inline-block;
     width: auto;
-    height: 36px;
+    height: 28px;
   }
 
   &__description {
@@ -746,7 +751,7 @@ body > main {
     align-items: center;
     justify-content: center;
     color: #000000;
-    margin: auto 0 8px;
+    margin: auto 0;
   }
 
   &__datamatrix {

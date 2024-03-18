@@ -1,4 +1,8 @@
-let iconSize = 160;
+import { jsPDF } from 'jspdf';
+import * as htmlToImage from 'html-to-image';
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
+
+let iconSize = 100;
 let itemCounter = 1;
 
 // To Remove
@@ -100,7 +104,7 @@ const itemAdder = () => {
   addButton.addEventListener('click', () => {
     itemCounter++;
 
-    let sidebarTemplate = `<div class="sidebar__item item" id="item_${itemCounter}">
+    let sidebarTemplate = `<li class="sidebar__item item" id="item_${itemCounter}">
       <div class="item__heading item__heading--active">
         <h2 class="item__title">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-qr-code"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>
@@ -161,7 +165,7 @@ const itemAdder = () => {
           </div>
         </fieldset>
       </form>
-    </div>`;
+    </li>`;
     let pageTemplate = `<div class="page page--a4" id="page_item_${itemCounter}">
       <div class="page__content print">
 
@@ -193,8 +197,10 @@ const itemAdder = () => {
       </div>
     </div>`;
 
-    sidebarItemContainer.insertAdjacentHTML('beforeend', sidebarTemplate);
-    pageItemContainer.insertAdjacentHTML('beforeend', pageTemplate);
+    document.querySelectorAll('.item__heading--active').forEach(item => item.classList.remove('item__heading--active'));
+    document.querySelectorAll('.item__form--active').forEach(item => item.classList.remove('item__form--active'));
+    sidebarItemContainer.insertAdjacentHTML('afterbegin', sidebarTemplate);
+    pageItemContainer.insertAdjacentHTML('afterbegin', pageTemplate);
     
     let newItem = document.getElementById(`item_${itemCounter}`);
     fieldInit(newItem);
@@ -230,6 +236,44 @@ const itemRemover = () => {
       document.querySelectorAll('.item__button--delete-confirm').forEach(button => button.classList.remove('item__button--delete-confirm'));
     }
   });
+}
+
+const savePNG = async (elements) => {
+  const button = event.target.closest('.item__button--download');
+  if (button) {
+    const item = button.closest('.item');
+    const itemId = item.id.replace('item_', '');
+    const pageItem = document.querySelector(`#page_item_${itemId}`);
+    const label = pageItem.querySelector('.print');
+    const skuField = item.querySelector('.sku-field');
+    const sku = skuField.value.toUpperCase() || skuField.placeholder;
+
+    const pdf = new jsPDF('p', 'in', 'a4', true);
+    await htmlToImage.toPng(label, {
+      quality: 1,
+      pixelRatio: 6,
+    })
+      .then(function (dataUrl) {
+        var img = new Image();
+        img.src = dataUrl;
+
+        const originalWidth = label.offsetWidth;
+        const originalHeight = label.offsetHeight;
+
+        const imgWidth = pixelToInch(originalWidth);
+        const imgHeight = pixelToInch(originalHeight);
+
+        const x = (8.3 - imgWidth) / 2;
+        const y = (11.7 - imgHeight) / 2;
+
+        const imgData = dataUrl;
+
+        pdf.addImage(imgData, 'png', x, y, imgWidth, imgHeight);
+
+        //pdf.addImage(dataUrl, 'PNG', 0, 0, 8.27, 11.69); // Add image to A4 paper, adjust the dimensions as needed
+        pdf.save(`item_${sku}.pdf`);
+      });
+  }
 }
 
 // Utils
@@ -306,7 +350,13 @@ const itemAccordion = () => {
   });
 }
 
+export const pixelToInch = (pixels) => {
+  const dpi = 96; // Assuming a standard DPI of 96
+  return parseFloat((pixels / dpi).toFixed(2));
+}
+
 // Init
 itemAccordion();
 itemAdder();
 itemRemover();
+el.sidebar.addEventListener('click', savePNG);
