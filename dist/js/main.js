@@ -3362,9 +3362,6 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 !function() {
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   pixelToInch: function() { return /* binding */ pixelToInch; }
-/* harmony export */ });
 /* harmony import */ var jspdf__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 /* harmony import */ var html_to_image__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
 
@@ -3573,6 +3570,7 @@ const itemAdder = () => {
     
     let newItem = document.getElementById(`item_${itemCounter}`);
     fieldInit(newItem);
+    enumerator();
   });
 }
 
@@ -3582,16 +3580,15 @@ const itemRemover = () => {
   sidebarItemContainer.addEventListener('click', (event) => {
     let button = event.target.closest('.item__button--delete');
     if (button) {
-      console.log(button.closest('.item').id, button.classList, itemCounter);
       if(button.classList.contains('item__button--delete-confirm')) {
-        itemCounter--;
+        //itemCounter--;
         button.classList.remove('item__button--delete-confirm');
         
-        console.log('delete confirmed');
         let item = button.closest('.item');
         let pageItem = document.getElementById(item.id.replace('item_', 'page_item_'));
         item.remove();
         pageItem.remove();
+        enumerator();
       } else {
         document.querySelectorAll('.item__button--delete-confirm').forEach(button => button.classList.remove('item__button--delete-confirm'));
         button.classList.add('item__button--delete-confirm');
@@ -3643,6 +3640,18 @@ const savePNG = async (elements) => {
         pdf.save(`item_${sku}.pdf`);
       });
   }
+}
+
+const enumerator = (elements) => {
+  const sidebarItems = document.querySelectorAll('.sidebar__item');
+  const lastItemIndex = sidebarItems.length - 1;
+  sidebarItems.forEach((item, index) => {
+    const number = lastItemIndex - index + 1;
+    item.setAttribute('data-number', number);
+    const itemId = item.id.replace('item_', '');
+    const pageItem = document.querySelector(`#page_item_${itemId}`);
+    pageItem.setAttribute('data-number', number);
+  });
 }
 
 // Utils

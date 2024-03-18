@@ -374,114 +374,6 @@ body > main {
 .preview {
   display: block;
   overflow: hidden;
-
-  &__controls {
-    background-color: #FFFFFF;
-    box-shadow: $paper;
-    border-radius: 4px;
-    margin: 12px 20px;
-    padding: 4px 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    line-height: 16px;
-  
-    svg {
-      pointer-events: none;
-    }
-
-    #upc-select-all,
-    #shipping-select-all {
-      margin-right: -1px;
-      border-radius: $border-radius 0 0 $border-radius;
-      transition-duration: 0.2s;
-
-      & + input + .button {
-        border-radius: 0;
-      }
-
-      &.select-all--checked,
-      &:active {
-        background-color: rgb(0, 123, 255);
-        border-color: rgba(51, 65, 85, 0.6);
-        z-index: 9;
-
-        svg { stroke: #ffffff; }
-      }
-    }
-  
-    input + button, input + .button{
-      position: relative;
-      border: 1px solid rgba(51, 65, 85, 0.2);
-      box-shadow: rgba(0, 0, 0, 0.03) 0px 4px 6px -1px, rgba(0, 0, 0, 0.03) 0px 2px 3px -1px;
-      z-index: 8;
-    }
-  
-    input:checked + button, input:checked + .button {
-      background-color: rgb(0, 123, 255);
-      border-color: rgba(51, 65, 85, 0.6);
-      z-index: 9;
-    }
-  
-    .button {
-      box-shadow: inset 0 1px 0 0 #fff3;
-    }
-  
-    .visibility__form {
-      margin: 0 auto 0 8px;
-      display: flex;
-      gap: 8px;
-    }
-  
-    .preview__layout [data-tooltip]::before {content: 'Maximize'; }
-    .preview__layout input:checked + [data-tooltip]::before { content: 'Minimize'; }
-  
-    .visibility__form [data-tooltip]::before { content: 'Show ' attr(data-tooltip); }
-    .visibility__form input:checked + [data-tooltip]::before { content: 'Hide ' attr(data-tooltip); }
-  
-    .download {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-  
-    @keyframes fadeInOut {
-      0% {opacity: 0;}
-      10% {opacity: 0.8;}
-      90% {opacity: 0.8;}
-      100% {opacity: 0;}
-    }
-  
-    .download__button {
-      display: flex;
-      align-items: center;
-      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
-      background-color: #1B3E5D;
-      color: #ffffff;
-      font-size: 12px;
-      gap: 8px;
-      line-height: 20px;
-      padding: 6px 12px;
-      transition: background-color 0.2s;
-  
-      svg {
-        width: 16px;
-        height: 16px;
-        stroke: #ffffff;
-      }
-    }
-    
-    .download__button:disabled {
-      background-color: #E3E5E8;
-      color: #9197A5;
-      box-shadow: none;
-      cursor: not-allowed;
-      pointer-events: none;
-  
-      svg { stroke: #9197A5; }
-    }
-  }
   
   &__content {
     display: flex;
@@ -527,12 +419,6 @@ body > main {
     text-transform: uppercase;
   }
 
-  $carton-length: 18.3; // Change default size of carton
-  $carton-width: 11.2;  // Remember to change the default 
-  $carton-height: 13.4; // sizes the canvasUpdate.js
-  $carton-expanded: 50%;
-  $carton-condensed: 30%;
-
   .preview__content--expanded & {
     margin: 40px 40px 0;
     padding: 40px;
@@ -541,89 +427,11 @@ body > main {
       width: 210mm;
       height: 297mm;
     }
-
-    &--carton { padding: 0 0 $carton-expanded; }
-    &--carton-front { width: calc($carton-expanded * ($carton-length / $carton-height)); }
-    &--carton-side { width: calc($carton-expanded * ($carton-width / $carton-height)); }
   }
 
   .preview__content--condensed & {
     margin: 10px;
     padding: 2px;
-
-    &--carton { padding: 0 0 $carton-condensed; }
-    &--carton-front { width: calc($carton-condensed * ($carton-length / $carton-height)); }
-    &--carton-side { width: calc($carton-condensed * ($carton-width / $carton-height)); }
-  }
-
-  &--carton {
-    display: block;
-    position: relative;
-    height: 0;
-  }
-
-  .scaler-wrapper { 
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    overflow: hidden; 
-    border-radius: $border-radius;
-
-    &.rendering .scaler {
-      transition: opacity 0.2s, transform 0s 0.2s;
-      transform: scale(1) !important;
-      opacity: 0;
-    }
-
-    &.rendering:before {
-      content: '';
-      display: block;
-      width: 36px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      aspect-ratio: 1;
-      --_g: no-repeat radial-gradient(farthest-side, rgba(101, 110, 129, 0.3) 94%,#0000);
-      background:
-        var(--_g) 0    0,
-        var(--_g) 100% 0,
-        var(--_g) 100% 100%,
-        var(--_g) 0    100%;
-      background-size: 40% 40%;
-      animation: l38 2s infinite; 
-    }
-
-    @keyframes l38 {
-      100% {background-position: 100% 0,100% 100%,0 100%,0 0}
-    }
-  }
-
-  .scaler {
-    transform-origin: top left;
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    transition: opacity 0.2s, transform 0s 0s;
-
-    & > canvas, & > img {
-      position: absolute;
-      width: 100% !important;
-      height: auto !important;
-    }
-  }
-
-  &--carton-front .scaler {
-    width: #{$carton-length}in;
-    height: #{$carton-height}in;
-  }
-
-  &--carton-side .scaler {
-    width: #{$carton-width}in;
-    height: #{$carton-height}in;
-
   }
 
   &--hidden {

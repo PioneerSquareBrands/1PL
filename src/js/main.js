@@ -204,6 +204,7 @@ const itemAdder = () => {
     
     let newItem = document.getElementById(`item_${itemCounter}`);
     fieldInit(newItem);
+    enumerator();
   });
 }
 
@@ -213,16 +214,15 @@ const itemRemover = () => {
   sidebarItemContainer.addEventListener('click', (event) => {
     let button = event.target.closest('.item__button--delete');
     if (button) {
-      console.log(button.closest('.item').id, button.classList, itemCounter);
       if(button.classList.contains('item__button--delete-confirm')) {
-        itemCounter--;
+        //itemCounter--;
         button.classList.remove('item__button--delete-confirm');
         
-        console.log('delete confirmed');
         let item = button.closest('.item');
         let pageItem = document.getElementById(item.id.replace('item_', 'page_item_'));
         item.remove();
         pageItem.remove();
+        enumerator();
       } else {
         document.querySelectorAll('.item__button--delete-confirm').forEach(button => button.classList.remove('item__button--delete-confirm'));
         button.classList.add('item__button--delete-confirm');
@@ -274,6 +274,18 @@ const savePNG = async (elements) => {
         pdf.save(`item_${sku}.pdf`);
       });
   }
+}
+
+const enumerator = (elements) => {
+  const sidebarItems = document.querySelectorAll('.sidebar__item');
+  const lastItemIndex = sidebarItems.length - 1;
+  sidebarItems.forEach((item, index) => {
+    const number = lastItemIndex - index + 1;
+    item.setAttribute('data-number', number);
+    const itemId = item.id.replace('item_', '');
+    const pageItem = document.querySelector(`#page_item_${itemId}`);
+    pageItem.setAttribute('data-number', number);
+  });
 }
 
 // Utils
@@ -350,7 +362,7 @@ const itemAccordion = () => {
   });
 }
 
-export const pixelToInch = (pixels) => {
+const pixelToInch = (pixels) => {
   const dpi = 96; // Assuming a standard DPI of 96
   return parseFloat((pixels / dpi).toFixed(2));
 }
