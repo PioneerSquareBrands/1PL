@@ -914,6 +914,10 @@ body.canvas-animating .preview__content {
   -webkit-transition-duration: 0.2s;
           transition-duration: 0.2s;
 }
+.page-item--active {
+  -webkit-box-shadow: rgba(0, 123, 255, 0.5) 0px 0px 0px 2px inset, rgba(0, 0, 0, 0.05) 0px 6px 8px 0px, rgba(0, 0, 0, 0.04) 0px 3px 4px 0px;
+          box-shadow: rgba(0, 123, 255, 0.5) 0px 0px 0px 2px inset, rgba(0, 0, 0, 0.05) 0px 6px 8px 0px, rgba(0, 0, 0, 0.04) 0px 3px 4px 0px;
+}
 .page-item--active::before {
   color: #ffffff;
   background-color: rgba(0, 123, 255, 0.9);
