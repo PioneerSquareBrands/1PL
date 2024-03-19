@@ -85,9 +85,9 @@ const loadSidebarData = () => {
         createItem(data.itemId, false, data.brand, data.sku, data.description);
       }
     });
+    // Set itemCounter to the highest itemId
+    itemCounter = Math.max(...itemsData.map(item => parseInt(item.itemId)));
   }
-  // Set itemCounter to the highest itemId
-  itemCounter = Math.max(...itemsData.map(item => parseInt(item.itemId)));
 }
 
 const brandUpdate = (element, index) => {
