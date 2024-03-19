@@ -243,11 +243,6 @@ body > main {
   list-style-type: none;
   position: relative;
 
-
-  // &:hover &__title {
-  //   color: rgba(0, 123, 255, 1);
-  // }
-
   #sku { text-transform: uppercase; }
 
   &__heading {
@@ -413,11 +408,6 @@ body > main {
     overflow: auto;
     padding: 40px 0px 20px;
     transition: opacity 0.2s;
-
-    body.canvas-animating & {
-      opacity: 0;
-      overflow: hidden;
-    }
   }
 }
 
@@ -466,37 +456,14 @@ body > main {
     }
   }
 
-  .preview__content--expanded & {
-    margin: 40px 40px 0;
-    padding: 40px;
-
-    &--a4 {
-      width: 210mm;
-      height: 297mm;
-    }
-  }
-
   .preview__content--condensed & {
     margin: 10px;
     padding: 2px;
-  }
-
-  &--hidden {
-    opacity: 0 !important;
-    position: absolute;
-    overflow: hidden;
-    z-index: -1;
   }
 }
 
 .print {
   display: block;
-
-  .page--carton & {
-    width: 100%;
-    height: 100%;
-    padding: 0.2in;
-  }
 
   &__header {
     text-align: center;
