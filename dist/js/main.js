@@ -3411,8 +3411,50 @@ const fieldInit = (item) => {
 };
 
 window.addEventListener('load', () => {
+  loadSidebarData();
   document.querySelectorAll('.sidebar__fields .item').forEach(fieldInit);
 });
+
+const saveSidebarData = (save = false) => {
+  const itemsData = Array.from(document.querySelectorAll('.sidebar__fields .item')).map(item => {
+    const itemId = item.id.replace('item_', '');
+    const brand = item.querySelector('.brand-field').value;
+    const sku = item.querySelector('.sku-field').value;
+    const description = item.querySelector('.description-field').value;
+    return { itemId, brand, sku, description };
+  });
+
+  // Only save to localStorage if there's at least one item with data; Prevents overwriting localStorage with onload
+  const hasData = itemsData.some(item => item.sku || item.description);
+
+  if (itemsData.length > 1 || (itemsData.length === 1 && hasData) || save) {
+    localStorage.setItem('sidebarData', JSON.stringify(itemsData));
+  }
+}
+
+const loadSidebarData = () => {
+  let itemsData = JSON.parse(localStorage.getItem('sidebarData'));
+  if (itemsData) {
+    itemsData = itemsData.sort((a, b) => a.itemId - b.itemId);
+
+    itemsData.forEach(data => {
+      const existingItem = document.querySelector(`#item_${data.itemId}`);
+      if (existingItem) {
+        existingItem.querySelector('.brand-field').value = data.brand;
+        existingItem.querySelector('.sku-field').value = data.sku;
+        existingItem.querySelector('.description-field').value = data.description;
+        
+        brandUpdate(existingItem, data.itemId);
+        skuUpdate(existingItem, data.itemId);
+        descriptionUpdate(existingItem, data.itemId);
+      } else {
+        createItem(data.itemId, false, data.brand, data.sku, data.description);
+      }
+    });
+  }
+  // Set itemCounter to the highest itemId
+  itemCounter = Math.max(...itemsData.map(item => parseInt(item.itemId)));
+}
 
 const brandUpdate = (element, index) => {
   let pageItem = document.querySelector('#page_item_' + index);
@@ -3442,6 +3484,8 @@ const brandUpdate = (element, index) => {
   element.querySelector('.description-field').placeholder = defaults(element).description;
 
   skuUpdate(element, index);
+
+  saveSidebarData();
 }
 
 const skuUpdate = (element, index) => {
@@ -3453,6 +3497,8 @@ const skuUpdate = (element, index) => {
   updateTextContent(pageItemSku, skuValue);
   updateTextContent(sidebarItemSku, skuValue);
   dataMatrixUpdate(skuValue, pageItem);
+
+  saveSidebarData();
 }
 
 const descriptionUpdate = (element, index) => {
@@ -3460,23 +3506,49 @@ const descriptionUpdate = (element, index) => {
   let pageItemDescription = document.querySelectorAll('#page_item_' + index + ' .print-description');
 
   updateTextContent(pageItemDescription, descriptionValue);
+
+  saveSidebarData();
 }
 
 const itemAdder = () => {
-  let sidebarItemContainer = document.querySelector('.sidebar__fields');
-  let pageItemContainer = document.querySelector('.preview__content');
   let addButton = document.querySelector('.sidebar__add-item');
 
   addButton.addEventListener('click', () => {
     itemCounter++;
+    createItem(itemCounter, true);
+  });
+}
 
-    let sidebarTemplate = `<li class="sidebar__item item" id="item_${itemCounter}">
+const createItem = (counter, save, brand,  sku = '', description = '') => {
+  let sidebarItemContainer = document.querySelector('.sidebar__fields');
+  let pageItemContainer = document.querySelector('.preview__content');
+
+  let sidebarTemplate = sidebarItemTemplate(counter, brand, sku, description);
+  let pageTemplate = pageItemTemplate(counter, brand, sku, description);
+
+  document.querySelectorAll('.item__heading--active').forEach(item => item.classList.remove('item__heading--active'));
+  document.querySelectorAll('.item__form--active').forEach(item => item.classList.remove('item__form--active'));
+  document.querySelectorAll('.page-item--active').forEach(item => item.classList.remove('page-item--active'));
+  sidebarItemContainer.insertAdjacentHTML('afterbegin', sidebarTemplate);
+  pageItemContainer.insertAdjacentHTML('afterbegin', pageTemplate);
+  
+  let newItem = document.getElementById(`item_${counter}`);
+  fieldInit(newItem);
+  enumerator();
+  if(save){ 
+    saveSidebarData() 
+  }
+}
+
+const sidebarItemTemplate = (counter, brand, sku = '', description = '') => {
+  return `
+    <li class="sidebar__item item" id="item_${counter}">
       <div class="item__heading item__heading--active">
         <h2 class="item__title">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-qr-code"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>
           <span class="item__title-text">
-            <span class="item__title-sku">1050001</span>
-            <span class="item__title-brand">(Brenthaven)</span>
+            <span class="item__title-sku">${sku}</span>
+            <span class="item__title-brand">(${brand})</span>
           </span>
         </h2>
         <div class="item__buttons">
@@ -3484,10 +3556,10 @@ const itemAdder = () => {
           <button class="item__button item__button--delete"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg></button>
         </div>
       </div>
-      <form id="upc_form_${itemCounter}" class="item__form item__form--active labelinator">
+      <form id="upc_form_${counter}" class="item__form item__form--active labelinator">
         <fieldset>
           <div class="field">
-            <label class="field__label" for="brand_${itemCounter}">
+            <label class="field__label" for="brand_${counter}">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="lucide lucide-hexagon">
@@ -3496,15 +3568,15 @@ const itemAdder = () => {
               </svg>
               Brand
             </label>
-            <select name="brand" id="brand_${itemCounter}" class="brand-field">
-              <option value="brenthaven">Brenthaven</option>
-              <option value="gumdrop">Gumdrop</option>
-              <option value="vault">Vault</option>
+            <select name="brand" id="brand_${counter}" class="brand-field">
+              <option value="brenthaven" ${brand === 'brenthaven' ? 'selected' : ''}>Brenthaven</option>
+              <option value="gumdrop" ${brand === 'gumdrop' ? 'selected' : ''}>Gumdrop</option>
+              <option value="vault" ${brand === 'vault' ? 'selected' : ''}>Vault</option>
             </select>
           </div>
 
           <div class="field">
-            <label class="field__label" for="sku_${itemCounter}">
+            <label class="field__label" for="sku_${counter}">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="lucide lucide-tag">
@@ -3513,11 +3585,11 @@ const itemAdder = () => {
               </svg>
               SKU
             </label>
-            <input type="text" id="sku_${itemCounter}" class="sku-field" placeholder="1050001">
+            <input type="text" id="sku_${counter}" class="sku-field" placeholder="1050001" value="${sku}">
           </div>
 
           <div class="field">
-            <label class="field__label" for="description_${itemCounter}">
+            <label class="field__label" for="description_${counter}">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="lucide lucide-text">
@@ -3527,52 +3599,45 @@ const itemAdder = () => {
               </svg>
               Description
             </label>
-            <textarea id="description_${itemCounter}" class="description-field" rows="5" placeholder="Edge Smart Connect Keyboard"></textarea>
+            <textarea id="description_${counter}" class="description-field" rows="5" placeholder="Edge Smart Connect Keyboard" value="${description}"></textarea>
           </div>
         </fieldset>
       </form>
     </li>`;
-    let pageTemplate = `<div class="page page--a4 page-item--active" id="page_item_${itemCounter}">
-      <div class="page__content print">
+};
 
-        <header class="print__header">
-          <h1 class="print-header">
-            <img src="dist/img/brenthaven_min.png">
-          </h1>
-          <span class="print__magenta">Magenta die line represents die cut of label &amp; does not print</span>
-        </header>
+const pageItemTemplate = (counter, brand, sku = '', description = '') => {
+  return `
+  <div class="page page--a4 page-item--active" id="page_item_${counter}">
+    <div class="page__content print">
 
-        <main class="print__content label">
-          <div class="label__brand">
-            <img class="label__logo print-logo" src="dist/img/brenthaven_min.png">
-          </div>
+      <header class="print__header">
+        <h1 class="print-header">
+          <img src="dist/img/${brand}_min.png">
+        </h1>
+        <span class="print__magenta">Magenta die line represents die cut of label &amp; does not print</span>
+      </header>
 
-          <div class="label__description print-description">Edge Smart Connect Keyboard</div>
+      <main class="print__content label">
+        <div class="label__brand">
+          <img class="label__logo print-logo" src="dist/img/${brand}_min.png">
+        </div>
 
-          <div class="label__internal">
-            <div class="label__datamatrix">Data Matrix</div>
-          </div>
+        <div class="label__description print-description">${description}</div>
 
-          <div class="label__info">
-            <span class="label__item">
-              <span class="label__item-sku print-sku">1050001</span>
-            </span>
-          </div>
-        </main>
+        <div class="label__internal">
+          <div class="label__datamatrix">Data Matrix</div>
+        </div>
 
-      </div>
-    </div>`;
+        <div class="label__info">
+          <span class="label__item">
+            <span class="label__item-sku print-sku">${sku}</span>
+          </span>
+        </div>
+      </main>
 
-    document.querySelectorAll('.item__heading--active').forEach(item => item.classList.remove('item__heading--active'));
-    document.querySelectorAll('.item__form--active').forEach(item => item.classList.remove('item__form--active'));
-    document.querySelectorAll('.page-item--active').forEach(item => item.classList.remove('page-item--active'));
-    sidebarItemContainer.insertAdjacentHTML('afterbegin', sidebarTemplate);
-    pageItemContainer.insertAdjacentHTML('afterbegin', pageTemplate);
-    
-    let newItem = document.getElementById(`item_${itemCounter}`);
-    fieldInit(newItem);
-    enumerator();
-  });
+    </div>
+  </div>`;
 }
 
 const itemRemover = () => {
@@ -3582,7 +3647,6 @@ const itemRemover = () => {
     let button = event.target.closest('.item__button--delete');
     if (button) {
       if(button.classList.contains('item__button--delete-confirm')) {
-        //itemCounter--;
         button.classList.remove('item__button--delete-confirm');
         
         let item = button.closest('.item');
@@ -3590,6 +3654,7 @@ const itemRemover = () => {
         item.remove();
         pageItem.remove();
         enumerator();
+        saveSidebarData(true);
       } else {
         document.querySelectorAll('.item__button--delete-confirm').forEach(button => button.classList.remove('item__button--delete-confirm'));
         button.classList.add('item__button--delete-confirm');
@@ -3602,6 +3667,18 @@ const itemRemover = () => {
     if (!button) {
       document.querySelectorAll('.item__button--delete-confirm').forEach(button => button.classList.remove('item__button--delete-confirm'));
     }
+  });
+}
+
+const enumerator = (elements) => {
+  const sidebarItems = document.querySelectorAll('.sidebar__item');
+  const lastItemIndex = sidebarItems.length - 1;
+  sidebarItems.forEach((item, index) => {
+    const number = lastItemIndex - index + 1;
+    item.querySelector('.item__title').setAttribute('data-number', number);
+    const itemId = item.id.replace('item_', '');
+    const pageItem = document.querySelector(`#page_item_${itemId}`);
+    pageItem.setAttribute('data-number', number);
   });
 }
 
@@ -3641,18 +3718,6 @@ const savePNG = async (elements) => {
         pdf.save(`item_${sku}.pdf`);
       });
   }
-}
-
-const enumerator = (elements) => {
-  const sidebarItems = document.querySelectorAll('.sidebar__item');
-  const lastItemIndex = sidebarItems.length - 1;
-  sidebarItems.forEach((item, index) => {
-    const number = lastItemIndex - index + 1;
-    item.querySelector('.item__title').setAttribute('data-number', number);
-    const itemId = item.id.replace('item_', '');
-    const pageItem = document.querySelector(`#page_item_${itemId}`);
-    pageItem.setAttribute('data-number', number);
-  });
 }
 
 // Utils
