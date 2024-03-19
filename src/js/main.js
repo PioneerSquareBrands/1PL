@@ -82,6 +82,7 @@ const loadSidebarData = () => {
         skuUpdate(existingItem, data.itemId);
         descriptionUpdate(existingItem, data.itemId);
       } else {
+        console.log(data.itemId, data.brand, data.sku, data.description);
         createItem(data.itemId, false, data.brand, data.sku, data.description);
       }
     });
@@ -175,6 +176,7 @@ const createItem = (counter, save, brand,  sku = '', description = '') => {
 }
 
 const sidebarItemTemplate = (counter, brand, sku = '', description = '') => {
+  console.log(counter, brand, sku, description);
   return `
     <li class="sidebar__item item" id="item_${counter}">
       <div class="item__heading item__heading--active">
@@ -233,7 +235,7 @@ const sidebarItemTemplate = (counter, brand, sku = '', description = '') => {
               </svg>
               Description
             </label>
-            <textarea id="description_${counter}" class="description-field" rows="5" placeholder="Edge Smart Connect Keyboard" value="${description}"></textarea>
+            <textarea id="description_${counter}" class="description-field" rows="5" placeholder="Edge Smart Connect Keyboard">${description}</textarea>
           </div>
         </fieldset>
       </form>
