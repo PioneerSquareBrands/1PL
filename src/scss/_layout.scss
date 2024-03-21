@@ -458,7 +458,7 @@ body > main {
 
   .preview__content--condensed & {
     margin: 10px;
-    padding: 2px;
+    padding: 0;
   }
 }
 
@@ -505,7 +505,8 @@ body > main {
 .label {
   width: 4in;
   height: 2in;
-  border: 1px solid magenta;
+  //border: 1px solid magenta;
+  border: 0 solid transparent;
   align-items: center;
   justify-content: center;
   display: flex;

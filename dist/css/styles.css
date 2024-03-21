@@ -921,7 +921,7 @@ body > main {
 }
 .preview__content--condensed .page {
   margin: 10px;
-  padding: 2px;
+  padding: 0;
 }
 
 .print {
@@ -965,7 +965,7 @@ body > main {
 .label {
   width: 4in;
   height: 2in;
-  border: 1px solid magenta;
+  border: 0 solid transparent;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
